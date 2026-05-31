@@ -44,16 +44,16 @@ AI Solution Generated → Auto-Reply Sent to User
 ## 📸 Screenshots
 
 ### n8n Workflow
-![n8n Workflow](screenshots/n8n-workflow.png)
+![n8n Workflow](Screenshots/n8n-workflow.png)
 
 ### Google Sheets Ticket Log
-![Google Sheets](screenshots/google-sheets.png)
+![Google Sheets](Screenshots/google-sheets.png)
 
 ### Auto-Reply Email Example
-![Auto Reply](screenshots/auto-reply-email.png)
+![Auto Reply](Screenshots/auto-reply-email.png)
 
 ### AI Solution in French
-![French Response](screenshots/french-response.png)
+![French Response](Screenshots/french-response.png)
 
 ## 🧪 Lab Environment
 
