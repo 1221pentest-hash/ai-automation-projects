@@ -43,18 +43,28 @@ AI Solution Generated → Auto-Reply Sent to User
 
 ## 📸 Screenshots
 
+## 📸 Screenshots
+
 ### n8n Workflow
-![n8n Workflow](Screenshots/n8n-workflow.png)
+![n8n Workflow](final%20workflow.png)
+
+### Gmail Inbox with Tickets
+![Gmail Inbox](emails.png)
 
 ### Google Sheets Ticket Log
-![Google Sheets](Screenshots/google-sheets.png)
+![Google Sheets](google%20sheet%20data.png)
 
-### Auto-Reply Email Example
-![Auto Reply](Screenshots/auto-reply-email.png)
+### Auto Reply in English
+![English Response](response%20EN.png)
 
-### AI Solution in French
-![French Response](Screenshots/french-response.png)
+### Auto Reply in Spanish
+![Spanish Response](response%20Esp.png)
 
+### Auto Reply in French
+![French Response](response%20FR.png)
+
+### n8n All Nodes Green
+![n8n Green](n8n%20green.png)
 ## 🧪 Lab Environment
 
 | Component | Details |
