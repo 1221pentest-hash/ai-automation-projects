@@ -43,7 +43,7 @@ AI Solution Generated → Auto-Reply Sent to User
 
 ## 📸 Screenshots
 
-## 📸 Screenshots
+
 
 ### n8n Workflow
 ![n8n Workflow](final%20workflow.png)
@@ -52,7 +52,10 @@ AI Solution Generated → Auto-Reply Sent to User
 ![Gmail Inbox](emails.png)
 
 ### Google Sheets Ticket Log
-![Google Sheets](google%20sheet%20data.png)
+![Google Sheets](google%20sheet%202.png)
+
+### Google Sheets Ticket Log
+![Google Sheets](google%20sheet%201.png)
 
 ### Auto Reply in English
 ![English Response](response%20EN.png)
