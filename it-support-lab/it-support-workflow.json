@@ -1,0 +1,401 @@
+{
+  "name": "IT Support Ticket System",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {
+          "readStatus": "unread"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -128,
+        -16
+      ],
+      "id": "07b3c181-d37e-4f48-bcef-bf34acb500d9",
+      "name": "Gmail Trigger",
+      "alwaysOutputData": false,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "PvpxZ9sZGPasCOSR",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1iGbxcL14wfiEKNwOREKV-oXwfX96w3pnDGRiplEgE2I",
+          "mode": "list",
+          "cachedResultName": "IT Support Tickets",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iGbxcL14wfiEKNwOREKV-oXwfX96w3pnDGRiplEgE2I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iGbxcL14wfiEKNwOREKV-oXwfX96w3pnDGRiplEgE2I/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "Open",
+            "Issue": "={{ $json.snippet }}",
+            "Subject": "={{ $json.Subject }}",
+            "From": "={{ $json.From }}",
+            "Date": "={{ $now }}",
+            "Ticket ID": "=TKT-{{ $now.toFormat('yyyyMMdd') }}-{{ $json.id.slice(-4) }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Ticket ID",
+              "displayName": "Ticket ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "From",
+              "displayName": "From",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Issue",
+              "displayName": "Issue",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Solution",
+              "displayName": "Solution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        96,
+        -16
+      ],
+      "id": "c7a82850-bb93-49ad-8357-53e0bcc1992b",
+      "name": "Append row in sheet",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n1UuQQtnTzoOdEsE",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=You are a friendly IT support technician named Alex.\n\nA user submitted this support ticket:\nSubject: {{ $json.Subject }}\nIssue: {{ $json.Issue }}\n\nCRITICAL INSTRUCTION: You MUST detect the language of the \"Issue\" field above and respond in EXACTLY that same language. \n- If the issue is written in Spanish → respond ONLY in Spanish\n- If the issue is written in French → respond ONLY in French  \n- If the issue is written in English → respond ONLY in English\n- Never mix languages in your response\n\nWrite a warm human response using their name if mentioned.\nGive 3-5 clear steps to fix the problem.\nDo NOT use markdown symbols like ** or ##.\nEnd with encouragement and offer further help."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        304,
+        -32
+      ],
+      "id": "84975f4f-3d8b-4d1b-8cf1-76a36844396a",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "qpoqN5GKWmbgaxl8",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Append row in sheet').item.json.From }}",
+        "subject": "=Re: {{ $('Append row in sheet').item.json.Subject }} - IT Support Response",
+        "message": "=<p>Dear User,</p>\n<p>{{ $json.output[0].content[0].text }}</p>\n<br>\n<p>Best regards,<br><b>IT Support Team</b></p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        656,
+        -32
+      ],
+      "id": "385b7b4f-4123-482a-9c2f-4566a0e60c4f",
+      "name": "Send a message",
+      "webhookId": "40008fe6-5942-4daf-b7a3-11e68644fed3",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "PvpxZ9sZGPasCOSR",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1iGbxcL14wfiEKNwOREKV-oXwfX96w3pnDGRiplEgE2I",
+          "mode": "list",
+          "cachedResultName": "IT Support Tickets",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iGbxcL14wfiEKNwOREKV-oXwfX96w3pnDGRiplEgE2I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iGbxcL14wfiEKNwOREKV-oXwfX96w3pnDGRiplEgE2I/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "Open",
+            "Ticket ID": "={{ $('Append row in sheet').item.json['Ticket ID'] }}",
+            "Solution": "={{ $('Message a model').item.json.output[0].content[0].text }}"
+          },
+          "matchingColumns": [
+            "Ticket ID"
+          ],
+          "schema": [
+            {
+              "id": "Ticket ID",
+              "displayName": "Ticket ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "From",
+              "displayName": "From",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Issue",
+              "displayName": "Issue",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Solution",
+              "displayName": "Solution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        816,
+        -16
+      ],
+      "id": "587cceb8-ec5b-409e-9687-5dbc15330355",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n1UuQQtnTzoOdEsE",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "129a6703-d4ff-4beb-9c1f-9ea0e5648b2d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "bb375bc93bd278e3f2299d5d6b9bd6b8673ea95a2ce4e85545d0bfb038945f61"
+  },
+  "id": "kd50ZammW4LIsW6K",
+  "tags": []
+}
